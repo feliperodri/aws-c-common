@@ -16,7 +16,8 @@ do
     $CLANG_FORMAT -output-replacements-xml $i | grep -c "<replacement " > /dev/null
     if [ $? -ne 1 ]
     then
-        echo "$i failed clang-format check."
+	$CLANG_FORMAT -i $i > /dev/null
+        echo "$i formatting fixed using clang-format."
         FAIL=1
     fi
 done
