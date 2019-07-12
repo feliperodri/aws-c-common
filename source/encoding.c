@@ -74,7 +74,7 @@ static const uint8_t BASE64_DECODING_TABLE[256] = {
 /* clang-format on */
 
 int aws_hex_compute_encoded_len(size_t to_encode_len, size_t *encoded_length) {
-    AWS_ASSERT(encoded_length);
+    AWS_PRECONDITION(encoded_length);
 
     size_t temp = (to_encode_len << 1) + 1;
 
