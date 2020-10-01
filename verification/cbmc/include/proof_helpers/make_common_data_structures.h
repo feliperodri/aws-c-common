@@ -19,8 +19,16 @@
 
 #include <stdlib.h>
 
-#define ASSUME_VALID_MEMORY(ptr) ptr = bounded_malloc(sizeof(*(ptr)))
-#define ASSUME_VALID_MEMORY_COUNT(ptr, count) ptr = bounded_malloc(sizeof(*(ptr)) * (count))
+#define ASSUME_VALID_MEMORY(ptr)                                                                                       \
+    do {                                                                                                               \
+        ptr = bounded_malloc(sizeof(*(ptr)));                                                                          \
+        __CPROVER_assume(ptr != NULL);                                                                                 \
+    } while (0)
+#define ASSUME_VALID_MEMORY_COUNT(ptr, count)                                                                          \
+    do {                                                                                                               \
+        ptr = bounded_malloc(sizeof(*(ptr)) * (count));                                                                \
+        __CPROVER_assume(AWS_MEM_IS_WRITABLE(ptr, count));                                                             \
+    } while (0)
 #define ASSUME_DEFAULT_ALLOCATOR(allocator) allocator = aws_default_allocator()
 #define ASSUME_CAN_FAIL_ALLOCATOR(allocator) allocator = can_fail_allocator()
 
